@@ -6,13 +6,15 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/06/29 21:52:37 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/01 15:52:36 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
+# include<limits.h>
+# include<stdbool.h>
 # include<string.h>
 # include<stdio.h>
 # include<stdlib.h>
@@ -33,6 +35,17 @@ typedef struct philosopher {
 }					t_philosopher;
 
 /**
+ * has info on one fork
+ *	 => id number of the fork
+ *	 => lock status of fork
+*/
+typedef struct fork {
+	int				fork_id;
+	bool			picked;
+	pthread_mutex_t	lock;
+}					t_fork;
+
+/**
  * has all the required info for the simulation
  *	 => list of philosophers
  *	 => all variables are pretty self explanatory
@@ -40,13 +53,26 @@ typedef struct philosopher {
  *		may quit successfully
 */
 typedef struct simulation_info {
-	t_philosopher	*list;
+	t_philosopher	*philos;
+	t_fork			*forks;
 	int				number_of_philosophers;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
-}					t_info;
+}					t_sim;
 
+//functions:
+void	print_exit(int n);
+
+//check_args:
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
+int		check_string(char *s);
+int		check_args(char **argv);
+void	check(int argc, char **argv, t_sim *sim);
+
+//atoi:
+int		ft_atoi(const char *s);
 
 #endif
