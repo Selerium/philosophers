@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 18:32:15 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/01 21:34:29 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct fork {
 typedef struct simulation_info {
 	t_philosopher	*philos;
 	t_fork			*forks;
+	int				index;
 	int				number_of_philosophers;
 	int				time_to_die;
 	int				time_to_eat;
@@ -78,6 +79,8 @@ t_sim	*check(int argc, char **argv);
 //atoi:
 int		ft_atoi(const char *s);
 
+//run_sim:
+void	run_sim(t_sim *sim);
 // printf("%d, %d, %d, %d, %d\n", sim->number_of_philosophers, sim->time_to_die, sim->time_to_eat, sim->time_to_sleep, sim->number_of_times_each_philosopher_must_eat);
 
 #endif

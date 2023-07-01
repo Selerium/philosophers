@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:05:40 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 19:24:03 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/01 21:35:11 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void	print_exit(int n)
 {
 	if (n == 1)
-		printf("Error in arguments. Exiting.");
+		printf("Error in arguments. Exiting.\n");
+	if (n == 2)
+		printf("Malloc error. Exiting.\n");
 	exit(0);
 }
 
@@ -32,6 +34,8 @@ void	free_sim(t_sim *sim)
 			pthread_mutex_destroy(&sim->forks[i].lock);
 		free(sim->forks);
 	}
+	if (sim)
+		free(sim);
 }
 
 void	set(t_sim *sim)
@@ -39,42 +43,23 @@ void	set(t_sim *sim)
 	int	i;
 
 	sim->philos = malloc (sizeof(t_philosopher) * sim->number_of_philosophers);
-	if (!sim->philos)
+	sim->forks = malloc (sizeof(t_fork) * sim->number_of_philosophers);
+	if (!sim->forks || !sim->philos)
+	{
 		free_sim(sim);
-	sim->forks = malloc (sizeof(t_philosopher) * sim->number_of_philosophers);
-	if (!sim->forks)
-		free_sim(sim);
+		print_exit(2);
+	}
 	i = 0;
 	while (i < sim->number_of_philosophers)
 	{
-		sim->philos[i].philosopher_id = i;
+		sim->philos[i].philosopher_id = i + 1;
 		sim->philos[i].number_of_meals = 0;
 		sim->philos[i].death_timer = 0;
-		sim->forks[i].fork_id = i;
+		sim->forks[i].fork_id = i + 1;
 		sim->forks[i].picked = 0;
-		i++;
+		pthread_mutex_init(&sim->forks[i].lock, NULL);
+			i++;
 	}
-}
-
-void	*sayhi(int *arg)
-{
-	printf("This is thread %d.\n", *arg);
-	return (NULL);
-}
-
-void	run_sim(t_sim *sim)
-{
-	int	i;
-
-	i = -1;
-	while (++i < sim->number_of_philosophers)
-	{
-		pthread_create(&sim->philos[i].thread, NULL, (void *) sayhi, &i);
-		usleep(50);
-	}
-	i = -1;
-	while (++i < sim->number_of_philosophers)
-		pthread_join(sim->philos[i].thread, NULL);
 }
 
 int	main(int argc, char **argv)
@@ -84,5 +69,6 @@ int	main(int argc, char **argv)
 	sim = check(argc, argv);
 	set(sim);
 	run_sim(sim);
+	free_sim(sim);
 	return (0);
 }
