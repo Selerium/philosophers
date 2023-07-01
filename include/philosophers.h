@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 15:52:36 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:32:15 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@
  *	 => number of meals had so far
 */
 typedef struct philosopher {
-	int	philosopher_id;
-	int	death_timer;
-	int	number_of_meals;
+	int			philosopher_id;
+	int			death_timer;
+	int			number_of_meals;
+	pthread_t	thread;
 }					t_philosopher;
 
 /**
@@ -64,15 +65,19 @@ typedef struct simulation_info {
 
 //functions:
 void	print_exit(int n);
+void	free_sim(t_sim *sim);
+void	set(t_sim *sim);
 
 //check_args:
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		check_string(char *s);
 int		check_args(char **argv);
-void	check(int argc, char **argv, t_sim *sim);
+t_sim	*check(int argc, char **argv);
 
 //atoi:
 int		ft_atoi(const char *s);
+
+// printf("%d, %d, %d, %d, %d\n", sim->number_of_philosophers, sim->time_to_die, sim->time_to_eat, sim->time_to_sleep, sim->number_of_times_each_philosopher_must_eat);
 
 #endif

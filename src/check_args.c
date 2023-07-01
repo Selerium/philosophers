@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 19:39:58 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 15:58:30 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/01 17:02:20 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,13 @@ int	check_args(char **argv)
 	return (0);
 }
 
-void	check(int argc, char **argv, t_sim *sim)
+t_sim	*check(int argc, char **argv)
 {
+	t_sim	*sim;
+
+	sim = malloc (sizeof(t_sim));
+	if (!sim)
+		free_sim(sim);
 	if (argc < 5 || argc > 6 || check_args(argv))
 		print_exit(1);
 	sim->number_of_philosophers = ft_atoi(argv[1]);
@@ -68,4 +73,7 @@ void	check(int argc, char **argv, t_sim *sim)
 	sim->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		sim->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
+	else
+		sim->number_of_times_each_philosopher_must_eat = 0;
+	return (sim);
 }
