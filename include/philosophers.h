@@ -6,12 +6,15 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 21:34:29 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/01 21:57:06 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
+
+# define L 0
+# define R 1
 
 # include<limits.h>
 # include<stdbool.h>
@@ -29,7 +32,7 @@
  *	 => number of meals had so far
 */
 typedef struct philosopher {
-	int			philosopher_id;
+	int			phil_id;
 	int			death_timer;
 	int			number_of_meals;
 	pthread_t	thread;

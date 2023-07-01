@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:05:40 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 21:35:11 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:12:04 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	set(t_sim *sim)
 	i = 0;
 	while (i < sim->number_of_philosophers)
 	{
-		sim->philos[i].philosopher_id = i + 1;
+		sim->philos[i].phil_id = i + 1;
 		sim->philos[i].number_of_meals = 0;
-		sim->philos[i].death_timer = 0;
+		sim->philos[i].death_timer = sim->time_to_die;
 		sim->forks[i].fork_id = i + 1;
 		sim->forks[i].picked = 0;
 		pthread_mutex_init(&sim->forks[i].lock, NULL);
