@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/03 18:07:12 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/03 20:13:51 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,21 @@ void	lock_forks(t_fork forks[2], int i)
 	struct timeval	tv;
 
 	pthread_mutex_lock(&forks[0].lock);
+	forks[0].picked = true;
 	gettimeofday(&tv, NULL);
-	printf("%ld %d has picked up a fork\n", tv.tv_usec / 1000, i + 1);
+	printf("%ld %d has picked up a fork %d\n", tv.tv_usec / 1000, i + 1, forks[0].fork_id);
 	pthread_mutex_lock(&forks[1].lock);
+	forks[1].picked = true;
 	gettimeofday(&tv, NULL);
-	printf("%ld %d has picked up a fork\n", tv.tv_usec / 1000, i + 1);
+	printf("%ld %d has picked up a fork %d\n", tv.tv_usec / 1000, i + 1, forks[1].fork_id);
 }
 
 void	unlock_forks(t_fork forks[2])
 {
 	pthread_mutex_unlock(&forks[0].lock);
+	forks[0].picked = false;
 	pthread_mutex_unlock(&forks[1].lock);
+	forks[1].picked = false;
 }
 
 void	*sayhi(t_sim *sim)
@@ -50,8 +54,8 @@ void	*sayhi(t_sim *sim)
 	while (sim->philos[i].number_of_meals++
 		< sim->number_of_times_each_philosopher_must_eat)
 	{
-		lock_forks(forks, i);
 		gettimeofday(&tv, NULL);
+		lock_forks(forks, i);
 		printf("%ld %d is eating\n", tv.tv_usec / 1000, i + 1);
 		usleep(sim->time_to_eat * 1000);
 		unlock_forks(forks);
