@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 19:39:58 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 21:33:54 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/11 12:57:18 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_sim	*check(int argc, char **argv)
 	sim->time_to_die = ft_atoi(argv[2]);
 	sim->time_to_eat = ft_atoi(argv[3]);
 	sim->time_to_sleep = ft_atoi(argv[4]);
+	sim->is_dead = 0;
 	if (argc == 6)
 		sim->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
 	else
