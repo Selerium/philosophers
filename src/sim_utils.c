@@ -6,16 +6,46 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:39:52 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 13:19:10 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:24:58 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/philosophers.h"
 
-// void	print_line(t_sim *sim, int i, char *str)
-// {
-// 	printf("test");
-// }
+void	print_line(t_sim *sim, int i, char *str)
+{
+	int	time;
+
+	pthread_mutex_lock(&sim->print_lock);
+	time = time_since_start(sim);
+	//printf("%d\n", time);
+	//if (!str)
+		printf("%d %d %s\n", time, i + 1, str);
+	pthread_mutex_unlock(&sim->print_lock);
+}
+
+int	check_sim_dead(t_sim *sim)
+{
+	int	val;
+
+	val = 0;
+	pthread_mutex_lock(&sim->lock);
+	if (sim->is_dead)
+		val = 1;
+	pthread_mutex_unlock(&sim->lock);
+	return (val);
+}
+
+void	set_sim_dead(t_sim *sim, int i)
+{
+	int	time;
+
+	pthread_mutex_lock(&sim->lock);
+	time = time_since_start(sim);
+	sim->is_dead = 1;
+	pthread_mutex_unlock(&sim->lock);
+	print_line(sim, i, "has died");
+}
 
 void	check_fork(t_sim *sim, int l, int i)
 {
@@ -25,18 +55,14 @@ void	check_fork(t_sim *sim, int l, int i)
 
 	flag = 1;
 	start = time_since_start(sim);
-	while (flag && !sim->is_dead)
+	while (flag && !check_sim_dead(sim))
 	{
 		pthread_mutex_lock(&sim->forks[l].lock);
 		if (!sim->forks[l].picked)
 		{
 			time = time_since_start(sim);
 			if (sim->philos[i].death_timer - (time - start) <= 0)
-			{
-				sim->is_dead = 1;
-				start = time_since_start(sim);
-				printf("%d %d has died\n", start, i + 1);
-			}
+				set_sim_dead(sim, i);
 			else
 			{
 				pthread_mutex_lock(&sim->forks[i].lock);
@@ -44,16 +70,12 @@ void	check_fork(t_sim *sim, int l, int i)
 				{
 					time = time_since_start(sim);
 					if (sim->philos[i].death_timer - (time - start) <= 0)
-					{
-						sim->is_dead = 1;
-						start = time_since_start(sim);
-						printf("%d %d has died\n", start, i + 1);
-					}
+						set_sim_dead(sim, i);
 					else
 					{
-						printf("%d %d has taken a fork\n", time, i + 1);
+						print_line(sim, i, "has taken a fork");
 						sim->forks[l].picked = true;
-						printf("%d %d has taken a fork\n", time, i + 1);
+						print_line(sim, i, "has taken a fork");
 						sim->forks[i].picked = true;
 					}
 					flag = 0;
@@ -83,51 +105,42 @@ int	mysleep(t_sim *sim, int i)
 	int	time;
 
 	start = time_since_start(sim);
-	time = 0;
-	while (time - start <= sim->time_to_sleep && !sim->is_dead)
+	time = time_since_start(sim);
+	while (time - start < sim->time_to_sleep && !check_sim_dead(sim))
 	{
-		usleep(MS);
-		if (sim->is_dead)
-			break ;
 		time = time_since_start(sim);
 		if (sim->philos[i].death_timer - (time - start) <= 0)
-		{
-			sim->is_dead = 1;
-			start = time_since_start(sim);
-			printf("%d %d has died\n", start, i + 1);
-		}
+			set_sim_dead(sim, i);
+		usleep(MS);
 	}
-	if (sim->is_dead)
+	if (check_sim_dead(sim))
 		return (0);
 	return (1);
 }
+
 int	eat(t_sim *sim, int i, int l)
 {
 	int	start;
 	int	time;
 
 	check_fork(sim, l, i);
-	if (sim->is_dead)
+	if (check_sim_dead(sim))
 		return (0);
 	sim->philos[i].death_timer = sim->time_to_die;
+	print_line(sim, i, "is eating");
 	start = time_since_start(sim);
-	printf("%d %d is eating\n", start, i + 1);
 	time = time_since_start(sim);
-	while (time - start <= sim->time_to_eat && !sim->is_dead)
+	while (time - start <= sim->time_to_eat && !check_sim_dead(sim))
 	{
 		usleep(MS);
-		if (sim->is_dead)
+		if (check_sim_dead(sim))
 			break ;
 		time = time_since_start(sim);
 		if (sim->philos[i].death_timer - (time - start) <= 0)
-		{
-			sim->is_dead = 1;
-			start = time_since_start(sim);
-			printf("%d %d has died\n", start, i + 1);
-		}
+			set_sim_dead(sim, i);
 	}
 	release_forks(sim, l, i);
-	if (sim->is_dead)
+	if (check_sim_dead(sim))
 		return (0);
 	return (1);
 }

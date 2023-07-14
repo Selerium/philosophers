@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 13:23:01 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:24:35 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ void	set_forks(t_fork *f1, t_fork *f2, t_sim *sim, int i)
 int	time_since_start(t_sim *sim)
 {
 	struct timeval	tv;
-	int				diff;
+	int				t1;
+	int				t2;
 
 	gettimeofday(&tv, NULL);
-	diff = (tv.tv_sec * 1000 + tv.tv_usec / 1000)
-		- (sim->start.tv_sec * 1000 + sim->start.tv_usec / 1000);
-	return (diff);
+	t1 = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	t2 = (sim->start.tv_sec * 1000 + sim->start.tv_usec / 1000);
+	if (t1 - t2)
+		return (t1 - t2);
+	return (0);
 }
 
 void	*sayhi(t_sim *sim)
@@ -48,18 +51,17 @@ void	*sayhi(t_sim *sim)
 	if (i == 0)
 		gettimeofday(&sim->start, NULL);
 	while (sim->philos[i].number_of_meals++
-		< sim->number_of_times_each_philosopher_must_eat)
+		!= sim->number_of_times_each_philosopher_must_eat)
 	{
 		if (!eat(sim, i, l))
 			break ;
-		time = time_since_start(sim);
-		printf("%d %d is sleeping\n", time, i + 1);
-		if (sim->is_dead)
+		if (check_sim_dead(sim))
 			break ;
+		print_line(sim, i, "is sleeping");
 		if (!mysleep(sim, i))
 			break ;
 		time = time_since_start(sim);
-		printf("%d %d is thinking\n", time, i + 1);
+		print_line(sim, i, "is thinking");
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 #    By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/29 15:55:58 by jadithya          #+#    #+#              #
-#    Updated: 2023/07/12 16:06:41 by jadithya         ###   ########.fr        #
+#    Updated: 2023/07/14 16:11:01 by jadithya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,10 @@ all: $(NAME)
 
 bonus: $(BONUS)
 
-$(NAME): $(OBJS)
+$(OBJDIR):
+	mkdir -p obj
+
+$(NAME): $(OBJS) $(OBJDIR)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
 $(BONUS): $(B_OBJS)

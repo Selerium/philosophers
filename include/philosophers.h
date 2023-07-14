@@ -6,14 +6,14 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 13:21:50 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:15:55 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# define MS 1
+# define MS 50
 
 # include<limits.h>
 # include<stdbool.h>
@@ -58,6 +58,8 @@ typedef struct fork {
 typedef struct simulation_info {
 	t_philosopher	*philos;
 	t_fork			*forks;
+	pthread_mutex_t	lock;
+	pthread_mutex_t	print_lock;
 	int				index;
 	int				number_of_philosophers;
 	int				time_to_die;
@@ -88,6 +90,9 @@ int		time_since_start(t_sim *sim);
 void	run_sim(t_sim *sim);
 
 //sim utils:
+void	print_line(t_sim *sim, int i, char *str);
+int		check_sim_dead(t_sim *sim);
+void	set_sim_dead(t_sim *sim, int i);
 int		eat(t_sim *sim, int i, int l);
 int		mysleep(t_sim *sim, int i);
 // printf("%d, %d, %d, %d, %d\n", sim->number_of_philosophers, sim->time_to_die, sim->time_to_eat, sim->time_to_sleep, sim->number_of_times_each_philosopher_must_eat);
