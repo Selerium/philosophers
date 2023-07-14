@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/04 15:52:33 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:23:01 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,52 +23,43 @@ void	set_forks(t_fork *f1, t_fork *f2, t_sim *sim, int i)
 	f2->picked = false;
 }
 
-void	lock_forks(pthread_mutex_t *l1, pthread_mutex_t *l2, int i)
+int	time_since_start(t_sim *sim)
 {
 	struct timeval	tv;
+	int				diff;
 
-	pthread_mutex_lock(l1);
 	gettimeofday(&tv, NULL);
-	printf("%ld %d has taken a fork\n", tv.tv_usec / 1000, i + 1);
-	pthread_mutex_lock(l2);
-	gettimeofday(&tv, NULL);
-	printf("%ld %d has taken a fork\n", tv.tv_usec / 1000, i + 1);
-	gettimeofday(&tv, NULL);
-	printf("%ld %d is eating\n", tv.tv_usec / 1000, i + 1);
-}
-
-void	unlock_forks(pthread_mutex_t *l1, pthread_mutex_t *l2, int i)
-{
-	struct timeval	tv;
-
-	pthread_mutex_unlock(l1);
-	pthread_mutex_unlock(l2);
-	gettimeofday(&tv, NULL);
-	printf("%ld %d is sleeping\n", tv.tv_usec / 1000, i + 1);
+	diff = (tv.tv_sec * 1000 + tv.tv_usec / 1000)
+		- (sim->start.tv_sec * 1000 + sim->start.tv_usec / 1000);
+	return (diff);
 }
 
 void	*sayhi(t_sim *sim)
 {
-	struct timeval	tv;
-	int				i;
-	int				l;
-	int				r;
+	int	time;
+	int	i;
+	int	l;
 
 	i = sim->index;
 	if (i == 0)
 		l = sim->number_of_philosophers - 1;
 	else
 		l = i - 1;
-	r = i;
-	while ((r || l) && sim->philos[i].number_of_meals++
+	if (i == 0)
+		gettimeofday(&sim->start, NULL);
+	while (sim->philos[i].number_of_meals++
 		< sim->number_of_times_each_philosopher_must_eat)
 	{
-		lock_forks(&sim->forks[l].lock, &sim->forks[r].lock, i);
-		usleep(sim->time_to_eat * 1000);
-		unlock_forks(&sim->forks[l].lock, &sim->forks[r].lock, i);
-		usleep(sim->time_to_sleep * 1000);
-		gettimeofday(&tv, NULL);
-		printf("%ld %d is thinking\n", tv.tv_usec / 1000, i + 1);
+		if (!eat(sim, i, l))
+			break ;
+		time = time_since_start(sim);
+		printf("%d %d is sleeping\n", time, i + 1);
+		if (sim->is_dead)
+			break ;
+		if (!mysleep(sim, i))
+			break ;
+		time = time_since_start(sim);
+		printf("%d %d is thinking\n", time, i + 1);
 	}
 	return (NULL);
 }

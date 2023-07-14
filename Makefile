@@ -6,7 +6,7 @@
 #    By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/29 15:55:58 by jadithya          #+#    #+#              #
-#    Updated: 2023/07/01 20:07:00 by jadithya         ###   ########.fr        #
+#    Updated: 2023/07/12 16:06:41 by jadithya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS := $(SRCDIR)/philosophers.c\
 		$(SRCDIR)/check_args.c\
 		$(SRCDIR)/ft_atoi.c\
 		$(SRCDIR)/run_sim.c\
+		$(SRCDIR)/sim_utils.c\
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 B_SRCS := 
