@@ -6,12 +6,14 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/11 12:44:28 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:21:50 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
+
+# define MS 1
 
 # include<limits.h>
 # include<stdbool.h>
@@ -82,7 +84,12 @@ t_sim	*check(int argc, char **argv);
 int		ft_atoi(const char *s);
 
 //run_sim:
+int		time_since_start(t_sim *sim);
 void	run_sim(t_sim *sim);
+
+//sim utils:
+int		eat(t_sim *sim, int i, int l);
+int		mysleep(t_sim *sim, int i);
 // printf("%d, %d, %d, %d, %d\n", sim->number_of_philosophers, sim->time_to_die, sim->time_to_eat, sim->time_to_sleep, sim->number_of_times_each_philosopher_must_eat);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/11 17:06:45 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:23:01 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,26 @@ void	*sayhi(t_sim *sim)
 	int	time;
 	int	i;
 	int	l;
-	int	r;
 
 	i = sim->index;
 	if (i == 0)
 		l = sim->number_of_philosophers - 1;
 	else
 		l = i - 1;
-	r = i;
 	if (i == 0)
 		gettimeofday(&sim->start, NULL);
 	while (sim->philos[i].number_of_meals++
-		< sim->number_of_times_each_philosopher_must_eat && (r || l))
+		< sim->number_of_times_each_philosopher_must_eat)
 	{
-		printf("%d %d is eating\n", time, i + 1);
+		if (!eat(sim, i, l))
+			break ;
+		time = time_since_start(sim);
 		printf("%d %d is sleeping\n", time, i + 1);
+		if (sim->is_dead)
+			break ;
+		if (!mysleep(sim, i))
+			break ;
+		time = time_since_start(sim);
 		printf("%d %d is thinking\n", time, i + 1);
 	}
 	return (NULL);
