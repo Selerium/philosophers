@@ -6,14 +6,14 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 18:15:55 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 19:53:12 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# define MS 50
+# define MS 200
 
 # include<limits.h>
 # include<stdbool.h>
@@ -67,7 +67,7 @@ typedef struct simulation_info {
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
 	int				is_dead;
-	struct timeval	start;
+	int				start;
 }					t_sim;
 
 //functions:
@@ -91,7 +91,7 @@ void	run_sim(t_sim *sim);
 
 //sim utils:
 void	print_line(t_sim *sim, int i, char *str);
-int		check_sim_dead(t_sim *sim);
+int		check_sim_dead(t_sim *sim, int i);
 void	set_sim_dead(t_sim *sim, int i);
 int		eat(t_sim *sim, int i, int l);
 int		mysleep(t_sim *sim, int i);

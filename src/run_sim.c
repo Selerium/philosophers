@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 18:24:35 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:12:55 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,31 @@ void	set_forks(t_fork *f1, t_fork *f2, t_sim *sim, int i)
 int	time_since_start(t_sim *sim)
 {
 	struct timeval	tv;
-	int				t1;
-	int				t2;
+	int				time;
 
 	gettimeofday(&tv, NULL);
-	t1 = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-	t2 = (sim->start.tv_sec * 1000 + sim->start.tv_usec / 1000);
-	if (t1 - t2)
-		return (t1 - t2);
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time - sim->start);
+}
+
+int	hungry(t_sim *sim, int i)
+{
+	if (sim->philos[i].number_of_meals
+		< sim->number_of_times_each_philosopher_must_eat)
+		return (1);
 	return (0);
+}
+
+void	set_start_time(t_sim *sim)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	sim->start = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }
 
 void	*sayhi(t_sim *sim)
 {
-	int	time;
 	int	i;
 	int	l;
 
@@ -49,28 +60,40 @@ void	*sayhi(t_sim *sim)
 	else
 		l = i - 1;
 	if (i == 0)
-		gettimeofday(&sim->start, NULL);
+		set_start_time(sim);
 	while (sim->philos[i].number_of_meals++
 		!= sim->number_of_times_each_philosopher_must_eat)
 	{
-		if (!eat(sim, i, l))
+		if (!eat(sim, i, l) || !hungry(sim, i))
 			break ;
-		if (check_sim_dead(sim))
+		if (check_sim_dead(sim, i))
 			break ;
 		print_line(sim, i, "is sleeping");
 		if (!mysleep(sim, i))
 			break ;
-		time = time_since_start(sim);
 		print_line(sim, i, "is thinking");
 	}
 	return (NULL);
 }
+
+//void	*lonely_philo(t_sim *sim)
+//{
+//	int	time;
+
+//	set_start_time(sim);
+//	time = time_since_start(sim);
+//	print_line(sim, 0, "has taken a fork");
+//	while (time < sim->time_to_die)
+//		usleep(MS);
+//}
 
 void	run_sim(t_sim *sim)
 {
 	int	i;
 
 	i = -1;
+	//if (sim->number_of_philosophers > 1)
+	//{
 	while (++i < sim->number_of_philosophers)
 	{
 		sim->index = i;
@@ -81,4 +104,10 @@ void	run_sim(t_sim *sim)
 	i = -1;
 	while (++i < sim->number_of_philosophers)
 		pthread_join(sim->philos[i].thread, NULL);
+	//}
+	//else
+	//{
+	//	pthread_create(&sim->philos[i].thread, NULL, (void *) lonely_philo,
+	//		sim);
+	//}
 }

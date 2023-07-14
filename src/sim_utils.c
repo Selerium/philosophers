@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:39:52 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 18:24:58 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:20:39 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@ void	print_line(t_sim *sim, int i, char *str)
 
 	pthread_mutex_lock(&sim->print_lock);
 	time = time_since_start(sim);
-	//printf("%d\n", time);
-	//if (!str)
-		printf("%d %d %s\n", time, i + 1, str);
+	printf("%d %d %s\n", time, i + 1, str);
 	pthread_mutex_unlock(&sim->print_lock);
 }
 
-int	check_sim_dead(t_sim *sim)
+int	check_sim_dead(t_sim *sim, int i)
 {
 	int	val;
 
 	val = 0;
 	pthread_mutex_lock(&sim->lock);
 	if (sim->is_dead)
+	{
 		val = 1;
+		sim->philos[i].death_timer = 0;
+	}
 	pthread_mutex_unlock(&sim->lock);
 	return (val);
 }
@@ -55,37 +56,23 @@ void	check_fork(t_sim *sim, int l, int i)
 
 	flag = 1;
 	start = time_since_start(sim);
-	while (flag && !check_sim_dead(sim))
+	while (flag && !check_sim_dead(sim, i))
 	{
 		pthread_mutex_lock(&sim->forks[l].lock);
-		if (!sim->forks[l].picked)
+		pthread_mutex_lock(&sim->forks[i].lock);
+		time = time_since_start(sim);
+		if (sim->philos[i].death_timer - (time - start) <= 0)
+			set_sim_dead(sim, i);
+		else if (!sim->forks[l].picked && !sim->forks[i].picked)
 		{
-			time = time_since_start(sim);
-			if (sim->philos[i].death_timer - (time - start) <= 0)
-				set_sim_dead(sim, i);
-			else
-			{
-				pthread_mutex_lock(&sim->forks[i].lock);
-				if (!sim->forks[i].picked)
-				{
-					time = time_since_start(sim);
-					if (sim->philos[i].death_timer - (time - start) <= 0)
-						set_sim_dead(sim, i);
-					else
-					{
-						print_line(sim, i, "has taken a fork");
-						sim->forks[l].picked = true;
-						print_line(sim, i, "has taken a fork");
-						sim->forks[i].picked = true;
-					}
-					flag = 0;
-				}
-				pthread_mutex_unlock(&sim->forks[i].lock);
-			}
+			print_line(sim, i, "has taken a fork");
+			sim->forks[l].picked = true;
+			print_line(sim, i, "has taken a fork");
+			sim->forks[i].picked = true;
+			flag = 0;
 		}
+		pthread_mutex_unlock(&sim->forks[i].lock);
 		pthread_mutex_unlock(&sim->forks[l].lock);
-		if (flag)
-			usleep(MS);
 	}
 }
 
@@ -106,14 +93,14 @@ int	mysleep(t_sim *sim, int i)
 
 	start = time_since_start(sim);
 	time = time_since_start(sim);
-	while (time - start < sim->time_to_sleep && !check_sim_dead(sim))
+	while (time - start < sim->time_to_sleep && !check_sim_dead(sim, i))
 	{
 		time = time_since_start(sim);
 		if (sim->philos[i].death_timer - (time - start) <= 0)
 			set_sim_dead(sim, i);
 		usleep(MS);
 	}
-	if (check_sim_dead(sim))
+	if (check_sim_dead(sim, i))
 		return (0);
 	return (1);
 }
@@ -124,23 +111,23 @@ int	eat(t_sim *sim, int i, int l)
 	int	time;
 
 	check_fork(sim, l, i);
-	if (check_sim_dead(sim))
+	if (check_sim_dead(sim, i))
 		return (0);
 	sim->philos[i].death_timer = sim->time_to_die;
 	print_line(sim, i, "is eating");
 	start = time_since_start(sim);
 	time = time_since_start(sim);
-	while (time - start <= sim->time_to_eat && !check_sim_dead(sim))
+	while (time - start < sim->time_to_eat && !check_sim_dead(sim, i))
 	{
 		usleep(MS);
-		if (check_sim_dead(sim))
+		if (check_sim_dead(sim, i))
 			break ;
 		time = time_since_start(sim);
 		if (sim->philos[i].death_timer - (time - start) <= 0)
 			set_sim_dead(sim, i);
 	}
 	release_forks(sim, l, i);
-	if (check_sim_dead(sim))
+	if (check_sim_dead(sim, i))
 		return (0);
 	return (1);
 }
