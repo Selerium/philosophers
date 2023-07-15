@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/15 14:13:30 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:12:55 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,35 @@ void	print_exit(int n);
 void	free_sim(t_sim *sim);
 void	set(t_sim *sim);
 
-//check_args:
+//sim utilities:
+void	print_line(t_sim *sim, int i, char *str);
+int		check_sim_dead(t_sim *sim, int i);
+void	set_sim_dead(t_sim *sim, int i);
+
+//forks:
+int		set_forks(t_sim *sim, int l, int i);
+void	check_fork(t_sim *sim, int l, int i);
+void	release_forks(t_sim *sim, int l, int i);
+
+//check arguments:
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		check_string(char *s);
 int		check_args(char **argv);
 t_sim	*check(int argc, char **argv);
 
+//philosopher tasks:
+int		mysleep(t_sim *sim, int i);
+int		eat(t_sim *sim, int i, int l);
+
 //atoi:
 int		ft_atoi(const char *s);
 
 //run_sim:
 int		time_since_start(t_sim *sim);
+int		hungry(t_sim *sim, int i);
+void	set_start_time(t_sim *sim);
+void	*sayhi(t_sim *sim);
 void	run_sim(t_sim *sim);
-
-//sim utils:
-void	print_line(t_sim *sim, int i, char *str);
-int		check_sim_dead(t_sim *sim, int i);
-void	set_sim_dead(t_sim *sim, int i);
-int		eat(t_sim *sim, int i, int l);
-int		mysleep(t_sim *sim, int i);
-// printf("%d, %d, %d, %d, %d\n", sim->number_of_philosophers, sim->time_to_die, sim->time_to_eat, sim->time_to_sleep, sim->number_of_times_each_philosopher_must_eat);
 
 #endif

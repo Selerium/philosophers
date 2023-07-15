@@ -6,22 +6,11 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/15 14:35:20 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:03:16 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/philosophers.h"
-
-//void	set_forks(t_fork *f1, t_fork *f2, t_sim *sim, int i)
-//{
-//	if (i == 0)
-//		f1 = &sim->forks[sim->number_of_philosophers - 1];
-//	else
-//		f1 = &sim->forks[i - 1];
-//	f2 = &sim->forks[i];
-//	f1->picked = false;
-//	f2->picked = false;
-//}
 
 int	time_since_start(t_sim *sim)
 {
@@ -76,17 +65,6 @@ void	*sayhi(t_sim *sim)
 	return (NULL);
 }
 
-//void	*lonely_philo(t_sim *sim)
-//{
-//	int	time;
-
-//	set_start_time(sim);
-//	time = time_since_start(sim);
-//	print_line(sim, 0, "has taken a fork");
-//	while (time < sim->time_to_die)
-//		usleep(MS);
-//}
-
 void	run_sim(t_sim *sim)
 {
 	int	i;
@@ -105,10 +83,4 @@ void	run_sim(t_sim *sim)
 	i = -1;
 	while (++i < sim->number_of_philosophers)
 		pthread_join(sim->philos[i].thread, NULL);
-	//}
-	//else
-	//{
-	//	pthread_create(&sim->philos[i].thread, NULL, (void *) lonely_philo,
-	//		sim);
-	//}
 }

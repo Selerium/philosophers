@@ -6,7 +6,7 @@
 #    By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/29 15:55:58 by jadithya          #+#    #+#              #
-#    Updated: 2023/07/14 16:11:01 by jadithya         ###   ########.fr        #
+#    Updated: 2023/07/15 16:15:54 by jadithya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,12 @@ NAME := philo
 BONUS := philo_bonus
 
 SRCS := $(SRCDIR)/philosophers.c\
+		$(SRCDIR)/sim_utils.c\
+		$(SRCDIR)/forks.c\
 		$(SRCDIR)/check_args.c\
+		$(SRCDIR)/philo_tasks.c\
 		$(SRCDIR)/ft_atoi.c\
 		$(SRCDIR)/run_sim.c\
-		$(SRCDIR)/sim_utils.c\
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 B_SRCS := 
