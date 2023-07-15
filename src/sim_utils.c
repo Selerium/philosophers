@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:39:52 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 20:20:39 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 14:47:48 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,22 @@ int	check_sim_dead(t_sim *sim, int i)
 
 void	set_sim_dead(t_sim *sim, int i)
 {
-	int	time;
-
 	pthread_mutex_lock(&sim->lock);
-	time = time_since_start(sim);
-	sim->is_dead = 1;
+	if (!sim->is_dead)
+	{
+		sim->is_dead = 1;
+		print_line(sim, i, "has died");
+	}
 	pthread_mutex_unlock(&sim->lock);
-	print_line(sim, i, "has died");
+}
+
+int	set_forks(t_sim *sim, int l, int i)
+{
+	print_line(sim, i, "has taken a fork");
+	sim->forks[l].picked = true;
+	print_line(sim, i, "has taken a fork");
+	sim->forks[i].picked = true;
+	return (0);
 }
 
 void	check_fork(t_sim *sim, int l, int i)
@@ -58,21 +67,21 @@ void	check_fork(t_sim *sim, int l, int i)
 	start = time_since_start(sim);
 	while (flag && !check_sim_dead(sim, i))
 	{
+		if (i + 1 == sim->number_of_philosophers)
+			pthread_mutex_lock(&sim->forks[i].lock);
 		pthread_mutex_lock(&sim->forks[l].lock);
-		pthread_mutex_lock(&sim->forks[i].lock);
+		if (l != i && i + 1 != sim->number_of_philosophers)
+			pthread_mutex_lock(&sim->forks[i].lock);
 		time = time_since_start(sim);
 		if (sim->philos[i].death_timer - (time - start) <= 0)
 			set_sim_dead(sim, i);
 		else if (!sim->forks[l].picked && !sim->forks[i].picked)
-		{
-			print_line(sim, i, "has taken a fork");
-			sim->forks[l].picked = true;
-			print_line(sim, i, "has taken a fork");
-			sim->forks[i].picked = true;
-			flag = 0;
-		}
-		pthread_mutex_unlock(&sim->forks[i].lock);
+			flag = set_forks(sim, l, i);
 		pthread_mutex_unlock(&sim->forks[l].lock);
+		if (l != i && i + 1 != sim->number_of_philosophers)
+			pthread_mutex_unlock(&sim->forks[i].lock);
+		if (l == i)
+			flag = 1;
 	}
 }
 

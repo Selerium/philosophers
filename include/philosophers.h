@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 19:53:12 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 14:13:30 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct simulation_info {
 	t_philosopher	*philos;
 	t_fork			*forks;
 	pthread_mutex_t	lock;
+	pthread_mutex_t	index_lock;
 	pthread_mutex_t	print_lock;
 	int				index;
 	int				number_of_philosophers;

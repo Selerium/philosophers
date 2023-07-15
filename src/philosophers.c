@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:05:40 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/01 22:12:04 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 14:32:07 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ void	free_sim(t_sim *sim)
 			pthread_mutex_destroy(&sim->forks[i].lock);
 		free(sim->forks);
 	}
+	pthread_mutex_destroy(&sim->lock);
+	pthread_mutex_destroy(&sim->print_lock);
+	pthread_mutex_destroy(&sim->index_lock);
 	if (sim)
 		free(sim);
 }
@@ -60,6 +63,9 @@ void	set(t_sim *sim)
 		pthread_mutex_init(&sim->forks[i].lock, NULL);
 			i++;
 	}
+	pthread_mutex_init(&sim->lock, NULL);
+	pthread_mutex_init(&sim->print_lock, NULL);
+	pthread_mutex_init(&sim->index_lock, NULL);
 }
 
 int	main(int argc, char **argv)
