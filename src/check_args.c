@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 19:39:58 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/14 18:02:23 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:48:30 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ t_sim	*check(int argc, char **argv)
 
 	sim = malloc (sizeof(t_sim));
 	if (!sim)
-		free_sim(sim);
+		return (NULL);
 	if (argc < 5 || argc > 6 || check_args(argv))
+	{
+		free (sim);
 		print_exit(1);
+	}
 	sim->number_of_philosophers = ft_atoi(argv[1]);
 	sim->time_to_die = ft_atoi(argv[2]);
 	sim->time_to_eat = ft_atoi(argv[3]);

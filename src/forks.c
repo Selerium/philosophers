@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:07:15 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/15 16:07:25 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:23:50 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	check_fork(t_sim *sim, int l, int i)
 	start = time_since_start(sim);
 	while (flag && !check_sim_dead(sim, i))
 	{
-		if (i + 1 == sim->number_of_philosophers)
+		if (i + 1 == sim->number_of_philosophers && i != l)
 			pthread_mutex_lock(&sim->forks[i].lock);
 		pthread_mutex_lock(&sim->forks[l].lock);
 		if (l != i && i + 1 != sim->number_of_philosophers)

@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:05:40 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/15 14:32:07 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:48:46 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	main(int argc, char **argv)
 	t_sim	*sim;
 
 	sim = check(argc, argv);
+	if (!sim)
+		print_exit(1);
 	set(sim);
 	run_sim(sim);
 	free_sim(sim);
