@@ -6,14 +6,14 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/15 16:12:55 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/15 21:15:01 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# define MS 200
+# define MS 100
 
 # include<limits.h>
 # include<stdbool.h>
