@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:39:52 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 22:04:40 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:28:23 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,16 @@ int	check_sim_dead(t_sim *sim, int i)
 
 void	set_sim_dead(t_sim *sim, int i)
 {
+	int	hassan;
+
+	hassan = 0;
 	pthread_mutex_lock(&sim->lock);
 	if (!sim->is_dead)
 	{
 		sim->is_dead = 1;
-		print_line(sim, i, "has died");
+		hassan = 1;
 	}
 	pthread_mutex_unlock(&sim->lock);
+	if (hassan)
+		print_line(sim, i, "has died");
 }
