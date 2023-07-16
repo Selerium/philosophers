@@ -6,7 +6,7 @@
 #    By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/29 15:55:58 by jadithya          #+#    #+#              #
-#    Updated: 2023/07/15 16:15:54 by jadithya         ###   ########.fr        #
+#    Updated: 2023/07/16 16:31:52 by jadithya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,8 @@ norm:
 	@echo "Bonus:"
 	@python3 -m norminette $(B_SRCS)
 
-valgrind: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all ./philo
+valgrind: re
+	valgrind --tool=helgrind ./philo 1 800 200 200 10
+	valgrind --leak-check=full --show-leak-kinds=all ./philo 1 800 200 200 10
 
 .PHONY: all bonus clean fclean re norm valgrind

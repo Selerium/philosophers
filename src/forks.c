@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:07:15 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/15 22:56:15 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 16:56:54 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ void	check_fork(t_sim *sim, int l, int i)
 			pthread_mutex_lock(&sim->forks[i].lock);
 		time = time_since_start(sim);
 		if (sim->philos[i].death_timer - (time - start) <= 0)
-			set_sim_dead(sim, i);
+			flag = 0;
 		else if (!sim->forks[l].picked && !sim->forks[i].picked)
 			flag = set_forks(sim, l, i);
 		pthread_mutex_unlock(&sim->forks[l].lock);
 		if (l != i)
 			pthread_mutex_unlock(&sim->forks[i].lock);
-		if (check_sim_dead(sim, i))
-			flag = 0;
 	}
+	time = time_since_start(sim);
+	sim->philos[i].death_timer -= (time - start);
 }
 
 void	release_forks(t_sim *sim, int l, int i)

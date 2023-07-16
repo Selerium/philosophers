@@ -6,14 +6,14 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/15 21:15:01 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 16:08:53 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# define MS 100
+# define MS 200
 
 # include<limits.h>
 # include<stdbool.h>
@@ -77,7 +77,8 @@ void	free_sim(t_sim *sim);
 void	set(t_sim *sim);
 
 //sim utilities:
-void	print_line(t_sim *sim, int i, char *str);
+int		print_line(t_sim *sim, int i, char *str);
+void	print_dead(t_sim *sim, int i, char *str);
 int		check_sim_dead(t_sim *sim, int i);
 void	set_sim_dead(t_sim *sim, int i);
 
