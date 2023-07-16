@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 22:19:00 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 23:02:57 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	free_sim(t_sim *sim);
 void	set(t_sim *sim);
 
 //sim utilities:
-void	print_line(t_sim *sim, int i, char *str);
+int		print_line(t_sim *sim, int i, char *str);
 int		check_sim_dead(t_sim *sim, int i);
 void	set_sim_dead(t_sim *sim, int i);
 

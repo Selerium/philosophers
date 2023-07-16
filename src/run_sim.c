@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 22:02:44 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 23:03:42 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	*sayhi(t_sim *sim)
 	{
 		if (!eat(sim, i, l) || !hungry(sim, i))
 			break ;
-		print_line(sim, i, "is sleeping");
 		if (!mysleep(sim, i))
 			break ;
-		print_line(sim, i, "is thinking");
+		if (!print_line(sim, i, "is thinking"))
+			return (0);
 		usleep(MS);
 	}
 	return (NULL);

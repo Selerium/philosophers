@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:05:47 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 22:47:03 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 23:03:19 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ int	mysleep(t_sim *sim, int i)
 
 	start = time_since_start(sim);
 	time = time_since_start(sim);
-	if (check_sim_dead(sim, i))
+	if (!print_line(sim, i, "is sleeping"))
 		return (0);
-	print_line(sim, i, "is sleeping");
 	while (time - start < sim->time_to_sleep)
 	{
 		time = time_since_start(sim);
@@ -39,9 +38,8 @@ int	eat(t_sim *sim, int i, int l)
 	int	time;
 
 	check_fork(sim, l, i);
-	if (check_sim_dead(sim, i))
+	if (!print_line(sim, i, "is eating"))
 		return (0);
-	print_line(sim, i, "is eating");
 	sim->philos[i].death_timer = sim->time_to_die;
 	start = time_since_start(sim);
 	time = time_since_start(sim);
