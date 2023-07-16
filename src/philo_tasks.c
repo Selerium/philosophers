@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:05:47 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 16:21:19 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 20:41:11 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ int	mysleep(t_sim *sim, int i)
 		usleep(MS);
 	}
 	sim->philos[i].death_timer -= sim->time_to_sleep;
-	if (sim->philos[i].death_timer)
-		return (1);
-	return (0);
+	return (1);
 }
 
 int	eat(t_sim *sim, int i, int l)
