@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:39:52 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 22:28:23 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:52:30 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ void	print_line(t_sim *sim, int i, char *str)
 	int	time;
 
 	pthread_mutex_lock(&sim->print_lock);
-	time = time_since_start(sim);
-	printf("%d %d %s\n", time, i + 1, str);
+	if (!check_sim_dead(sim, i))
+	{
+		time = time_since_start(sim);
+		printf("%d %d %s\n", time, i + 1, str);
+	}
 	pthread_mutex_unlock(&sim->print_lock);
 }
 
@@ -40,6 +43,7 @@ int	check_sim_dead(t_sim *sim, int i)
 void	set_sim_dead(t_sim *sim, int i)
 {
 	int	hassan;
+	int	time;
 
 	hassan = 0;
 	pthread_mutex_lock(&sim->lock);
@@ -50,5 +54,10 @@ void	set_sim_dead(t_sim *sim, int i)
 	}
 	pthread_mutex_unlock(&sim->lock);
 	if (hassan)
-		print_line(sim, i, "has died");
+	{
+		pthread_mutex_lock(&sim->print_lock);
+		time = time_since_start(sim);
+		printf("%d %d %s\n", time, i + 1, "has died");
+		pthread_mutex_unlock(&sim->print_lock);
+	}
 }
