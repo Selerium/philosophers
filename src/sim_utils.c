@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:39:52 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 22:52:30 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:54:50 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ void	print_line(t_sim *sim, int i, char *str)
 {
 	int	time;
 
+	if (check_sim_dead(sim, i))
+		return ;
 	pthread_mutex_lock(&sim->print_lock);
-	if (!check_sim_dead(sim, i))
-	{
-		time = time_since_start(sim);
-		printf("%d %d %s\n", time, i + 1, str);
-	}
+	time = time_since_start(sim);
+	printf("%d %d %s\n", time, i + 1, str);
 	pthread_mutex_unlock(&sim->print_lock);
 }
 
