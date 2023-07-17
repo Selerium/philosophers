@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:05:47 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 20:41:11 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:29:56 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	eat(t_sim *sim, int i, int l)
 	int	start;
 	int	time;
 
-	check_fork(sim, l, i);
+	check_fork(sim, l, i, 1);
 	if (!print_line(sim, i, "is eating"))
 		return (0);
 	sim->philos[i].death_timer = sim->time_to_die;

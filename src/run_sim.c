@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 20:05:31 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 16:15:58 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/17 13:33:49 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	*sayhi(t_sim *sim)
 		if (!mysleep(sim, i))
 			break ;
 		if (!print_line(sim, i, "is thinking"))
-			break ;
+			return (0);
+		usleep(MS);
 	}
 	return (NULL);
 }
@@ -76,7 +77,7 @@ void	run_sim(t_sim *sim)
 		pthread_mutex_unlock(&sim->index_lock);
 		pthread_create(&sim->philos[i].thread, NULL, (void *) sayhi,
 			sim);
-		usleep(MS);
+		usleep(50);
 	}
 	i = -1;
 	while (++i < sim->number_of_philosophers)
