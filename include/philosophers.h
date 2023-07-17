@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:34:00 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 23:02:57 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:29:50 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	set_sim_dead(t_sim *sim, int i);
 
 //forks:
 int		set_forks(t_sim *sim, int l, int i);
-void	check_fork(t_sim *sim, int l, int i);
+void	check_fork(t_sim *sim, int l, int i, int flag);
 void	release_forks(t_sim *sim, int l, int i);
 
 //check arguments:

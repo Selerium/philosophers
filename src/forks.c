@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:07:15 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/17 14:46:19 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:29:41 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,11 @@ int	set_forks(t_sim *sim, int l, int i)
 	return (0);
 }
 
-void	check_fork(t_sim *sim, int l, int i)
+void	check_fork(t_sim *sim, int l, int i, int flag)
 {
 	int	start;
 	int	time;
-	int	flag;
 
-	flag = 1;
 	start = time_since_start(sim);
 	while (flag)
 	{
