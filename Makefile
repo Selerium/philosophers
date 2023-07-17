@@ -6,7 +6,7 @@
 #    By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/29 15:55:58 by jadithya          #+#    #+#              #
-#    Updated: 2023/07/17 15:26:58 by jadithya         ###   ########.fr        #
+#    Updated: 2023/07/17 15:58:11 by jadithya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ re: fclean all
 
 norm:
 	@echo "Mandatory:"
-	@python3 -m norminette $(SRCS)
+	@python3 -m norminette $(SRCS) include/philosophers.h
 
 tests: $(NAME)
 	./philo $(ARG)
