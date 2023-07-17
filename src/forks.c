@@ -6,7 +6,7 @@
 /*   By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:07:15 by jadithya          #+#    #+#             */
-/*   Updated: 2023/07/16 22:57:38 by jadithya         ###   ########.fr       */
+/*   Updated: 2023/07/17 13:58:01 by jadithya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	check_fork(t_sim *sim, int l, int i)
 			pthread_mutex_unlock(&sim->forks[i].lock);
 		if (check_sim_dead(sim, i))
 			return ;
+		usleep(19);
 	}
 }
 
