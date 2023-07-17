@@ -13,7 +13,7 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# define MS 100
+# define MS 200
 
 # include<limits.h>
 # include<stdbool.h>

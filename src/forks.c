@@ -42,7 +42,7 @@ void	check_fork(t_sim *sim, int l, int i, int flag)
 			pthread_mutex_lock(&sim->forks[i].lock);
 		time = time_since_start(sim);
 		if (sim->philos[i].death_timer - (time - start) <= 0)
-			set_sim_dead(sim, i);
+			flag = 0;
 		else if (!sim->forks[l].picked && !sim->forks[i].picked)
 			flag = set_forks(sim, l, i);
 		pthread_mutex_unlock(&sim->forks[l].lock);
@@ -52,6 +52,8 @@ void	check_fork(t_sim *sim, int l, int i, int flag)
 			return ;
 		usleep(25);
 	}
+	time = time_since_start(sim);
+	sim->philos[i].death_timer -= (time - start);
 }
 
 void	release_forks(t_sim *sim, int l, int i)
