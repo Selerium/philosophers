@@ -6,7 +6,7 @@
 #    By: jadithya <jadithya@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/29 15:55:58 by jadithya          #+#    #+#              #
-#    Updated: 2023/07/17 15:58:11 by jadithya         ###   ########.fr        #
+#    Updated: 2023/07/17 16:15:55 by jadithya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,14 +36,14 @@ all: $(NAME)
 $(OBJDIR):
 	mkdir -p obj
 
-$(NAME): $(OBJS) $(OBJDIR)
+$(NAME): $(OBJDIR) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm -f $(OBJDIR)/*.o $(B_OBJDIR)/*.o
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME) $(BONUS)
